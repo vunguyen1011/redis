@@ -1,4 +1,4 @@
-package com.JPA.redis.DTO.Request;
+package com.JPA.redis.DTO.Response;
 
 import lombok.Builder;
 import lombok.Data;

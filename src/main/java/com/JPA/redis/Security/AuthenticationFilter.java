@@ -1,6 +1,9 @@
 package com.JPA.redis.Security;
 
+import com.JPA.redis.Exception.ErrorCode;
+import com.JPA.redis.Exception.WebException;
 import com.JPA.redis.Service.JwtService;
+import com.JPA.redis.Service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final TokenService tokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -40,6 +44,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         // Lấy JWT token
         jwtToken = authHeader.substring(7);
+        String jti = jwtService.extractTokenId(jwtToken);
+        if(tokenService.isTokenBlacklisted(jti)) {
+            throw new WebException(ErrorCode.TOKEN_REVOKED);
+        }
 
         try {
             // Lấy username từ token

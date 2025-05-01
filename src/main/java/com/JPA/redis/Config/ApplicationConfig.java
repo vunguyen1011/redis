@@ -1,4 +1,4 @@
-package com.JPA.redis.Security;
+package com.JPA.redis.Config;
 
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;

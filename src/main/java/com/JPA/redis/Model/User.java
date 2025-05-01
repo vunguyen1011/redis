@@ -1,5 +1,6 @@
 package com.JPA.redis.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements IUser {
+public class User implements IUser, Serializable {
 	@Id
 	
 	private String username;

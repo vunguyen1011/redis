@@ -21,15 +21,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Security {
 	private final AuthenticationFilter authenticationFilter;
-
+    private final String[] WHITE_LIST = {
+            "/api/auths",
+            "/api/auths/refresh"
+    };
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				// Tắt CSRF cho API
 				.csrf(csrf -> csrf.disable())
 				// Cho phép tất cả request
-				.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(WHITE_LIST).permitAll()
+                        .anyRequest().authenticated()
+                )
+
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
